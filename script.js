@@ -1,12 +1,27 @@
+const quoteContainer = document.getElementById('quote-container');
+const quoteText = document.getElementById('quote');
+const authorText = document.getElementById('author');
+const newQuoteBtn = document.getElementById('new-quote');
+const twitterBtn = document.getElementById('twitter');
+const loader = document.getElementById('loader');
+
 let apiQuotes = [];
-let quoteContainer = document.getElementById('quote-container');
-let quoteText = document.getElementById('quote');
-let authorText = document.getElementById('author');
-let newQuoteBtn = document.getElementById('new-quote');
-let twitterBtn = document.getElementById('twitter')
+
+//Show loading
+function loading() {
+    loader.hidden = false;
+    quoteContainer.hidden = true;
+}
+
+//Hide loading
+function complete() {
+    quoteContainer.hidden = false;
+    loader.hidden = true;
+}
 
 // Show new quote
 function newQuote() {
+    loading();
     // Pick a random quote from API quotes array
     const quote = apiQuotes[Math.floor(Math.random() * apiQuotes.length)];
     // console.log(quote);
@@ -25,11 +40,14 @@ function newQuote() {
         quoteText.classList.remove('long-quote');
     }
 
+    //Set quote, hide loader
     quoteText.textContent = quote.text;
+    complete();
 }
 
 // Get quotes from API
 async function getQuotes() {
+    loading();
     const apiUrl = 'https://jacintodesign.github.io/quotes-api/data/quotes.json';
     try {
         const response = await fetch(apiUrl); //'response' will not be populated until it has some data fetched from the API
@@ -52,7 +70,6 @@ twitterBtn.addEventListener('click', tweetQuote);
 
 //Run function as soon as the page loads
 getQuotes();
-
 
 
 /*
